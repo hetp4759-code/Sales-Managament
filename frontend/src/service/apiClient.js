@@ -6,7 +6,7 @@ const API_ROOT_URL =
   (import.meta.env.PROD ? "/api" : "http://localhost:3000/api");
 
 const apiClient = axios.create({
-  baseURL: `${API_ROOT_URL}/sales`,
+  baseURL: API_ROOT_URL,
   headers: {
     "Content-Type": "application/json",
   },

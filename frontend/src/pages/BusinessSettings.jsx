@@ -51,7 +51,7 @@ const BUSINESS_TYPES = [
 ];
 const REGISTRATION_TYPES = ["Regular", "Composition", "Other"];
 const inputClass =
-  "mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10";
+  "mt-1.5 min-h-11 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10";
 const fieldClass = (error) =>
   `${inputClass} ${error ? "border-red-400 focus:border-red-500 focus:ring-red-500/10" : ""}`;
 const labelClass = "block text-sm font-medium text-slate-700";
@@ -290,8 +290,8 @@ const BusinessSettings = () => {
   const serverError = businessProfileError || error;
 
   return (
-    <main className="min-h-screen w-full bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
-      <div className="w-full">
+    <main className="min-h-screen min-w-0 w-full bg-slate-50 px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
+      <div className="min-w-0 w-full">
         <header className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
@@ -306,7 +306,7 @@ const BusinessSettings = () => {
           {!isSetup && (
             <Link
               to="/dashboard"
-              className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+              className="min-h-11 w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-center text-sm font-semibold text-slate-700 hover:bg-slate-50 sm:w-auto"
             >
               Back to Dashboard
             </Link>
@@ -342,16 +342,16 @@ const BusinessSettings = () => {
           onSubmit={handleSubmit}
           noValidate
           aria-busy={saving}
-          className="space-y-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8"
+          className="space-y-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:p-8"
         >
           <section aria-labelledby="basic-details-title">
             <h2 id="basic-details-title" className="text-base font-semibold text-slate-900">
               Basic business details
             </h2>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
               <TextField label="Business name" name="name" value={profile.name} onChange={handleChange} error={fieldErrors.name} required autoComplete="organization" />
               <SelectField label="Business type" name="businessType" value={profile.businessType} onChange={handleChange} options={BUSINESS_TYPES} error={fieldErrors.businessType} required />
-              <label className={`${labelClass} sm:col-span-2`} htmlFor="business-address">
+              <label className={`${labelClass} md:col-span-2`} htmlFor="business-address">
                 Business address<span className="ml-1 text-red-600" aria-hidden="true">*</span>
                 <textarea
                   id="business-address"
@@ -378,7 +378,7 @@ const BusinessSettings = () => {
             <h2 id="gst-details-title" className="text-base font-semibold text-slate-900">
               GST registration
             </h2>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
               <SelectField
                 label="Is the business GST-registered?"
                 name="hasGstRegistration"
@@ -424,11 +424,11 @@ const BusinessSettings = () => {
             </p>
           </section>
 
-          <div className="flex flex-wrap items-center gap-3 border-t border-slate-100 pt-5">
+          <div className="flex flex-col items-stretch gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:items-center">
             <button
               type="submit"
               disabled={saving || businessProfileLoading || Boolean(businessProfileError)}
-              className="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+              className="min-h-11 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
             >
               {saving
                 ? "Saving..."

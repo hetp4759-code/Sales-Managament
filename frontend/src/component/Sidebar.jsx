@@ -69,7 +69,7 @@ const navItems = [
 ];
 
 const linkClass = ({ isActive }) =>
-  `flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 ${
+  `flex items-center justify-center gap-3 rounded-lg px-2 py-3 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 md:justify-start md:px-4 ${
     isActive
       ? "bg-blue-600 text-white"
       : "text-slate-300 hover:bg-white/10 hover:text-white"
@@ -99,17 +99,17 @@ const Sidebar = () => {
   };
 
   return (
-<aside className="sticky top-0 flex h-screen w-60 shrink-0 flex-col bg-[#0b1d4a] px-4 py-6 text-white">
+<aside className="sticky top-0 flex h-screen w-14 shrink-0 flex-col overflow-y-auto bg-[#0b1d4a] px-1.5 py-4 text-white md:w-60 md:px-4 md:py-6">
 
   {/* Logo — click to go Home */}
   <Link
     to="/"
     aria-label="Go to Home"
-    className="mb-8 flex items-center gap-2.5 rounded-lg px-2 text-blue-500 transition-opacity hover:opacity-80"
+    className="mb-8 flex items-center justify-center gap-2.5 rounded-lg px-0 text-blue-500 transition-opacity hover:opacity-80 md:justify-start md:px-2"
   >
     <CartIcon />
 
-    <span className="text-xl font-bold tracking-tight text-white">
+    <span className="sr-only text-xl font-bold tracking-tight text-white md:not-sr-only">
       SalesManager
     </span>
   </Link>
@@ -119,19 +119,21 @@ const Sidebar = () => {
     {navItems.map(({ label, to, icon: Icon }) => (
       <NavLink key={to} to={to} className={linkClass}>
         <Icon />
-        <span>{label}</span>
+        <span className="sr-only md:not-sr-only">{label}</span>
       </NavLink>
     ))}
   </nav>
 
   {admin && (
-    <div className="mb-3 truncate px-4 text-xs text-slate-400">
-      {admin.name}
+    <div className="mb-3 truncate px-0 text-center text-xs text-slate-400 md:px-4 md:text-left">
+      <span className="hidden md:inline">{admin.name}</span>
       <Link
         to="/business-settings"
-        className="mt-1 block w-fit text-slate-300 underline-offset-2 hover:text-white hover:underline"
+        aria-label="Business details"
+        className="mt-1 block w-fit text-slate-300 underline-offset-2 hover:text-white hover:underline md:mx-0 mx-auto"
       >
-        Business details
+        <span className="md:hidden">Biz</span>
+        <span className="sr-only md:not-sr-only">Business details</span>
       </Link>
     </div>
   )}
@@ -147,10 +149,10 @@ const Sidebar = () => {
     type="button"
     onClick={handleLogout}
     disabled={loggingOut}
-    className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 disabled:cursor-wait disabled:opacity-60"
+    className="flex items-center justify-center gap-3 rounded-lg px-2 py-3 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 disabled:cursor-wait disabled:opacity-60 md:justify-start md:px-4"
   >
     <LogoutIcon />
-    <span>{loggingOut ? "Logging out..." : "Logout"}</span>
+    <span className="sr-only md:not-sr-only">{loggingOut ? "Logging out..." : "Logout"}</span>
   </button>
 
 </aside>

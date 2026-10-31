@@ -3,7 +3,7 @@ import inventoryService from "../service/inventoryService";
 
 const units = ["Piece", "Kg", "Litre", "Gram", "Packet"];
 const inputClass =
-  "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10";
+  "min-h-11 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10";
 const fieldClass = "block text-sm font-medium text-slate-700";
 
 const initialForm = {
@@ -140,8 +140,8 @@ const Inventory = () => {
   };
 
   return (
-    <main className="min-h-screen w-full bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
-      <div className="w-full space-y-6">
+    <main className="min-h-screen min-w-0 w-full bg-slate-50 px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
+      <div className="min-w-0 w-full space-y-6">
         <header className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
@@ -172,11 +172,11 @@ const Inventory = () => {
           </p>
         )}
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+        <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:p-7">
           <h2 className="text-lg font-semibold text-slate-900">
             {editingId ? "Edit product" : "Add a product"}
           </h2>
-          <form onSubmit={handleSubmit} className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <form onSubmit={handleSubmit} className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <label className={fieldClass}>
               Product name *
               <input className={`${inputClass} mt-1.5`} value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} required />
@@ -219,11 +219,11 @@ const Inventory = () => {
                 <input type="number" min="0" step="any" className={`${inputClass} mt-1.5`} value={form.stock} onChange={(event) => setForm({ ...form, stock: event.target.value })} />
               </label>
             )}
-            <label className={`${fieldClass} sm:col-span-2 lg:col-span-3`}>
+            <label className={`${fieldClass} md:col-span-2 lg:col-span-3`}>
               Description
               <textarea rows={2} className={`${inputClass} mt-1.5`} value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} />
             </label>
-            <div className="flex gap-2 sm:col-span-2 lg:col-span-3">
+            <div className="flex flex-wrap gap-2 md:col-span-2 lg:col-span-3">
               <button type="submit" disabled={saving} className="rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60">
                 {saving ? "Saving..." : editingId ? "Save changes" : "Add product"}
               </button>
@@ -245,7 +245,7 @@ const Inventory = () => {
           ) : products.length === 0 ? (
             <p className="p-8 text-center text-sm text-slate-500">No products yet. Add one above to track stock.</p>
           ) : (
-            <div className="overflow-x-auto">
+            <div className="max-w-full overflow-x-auto overscroll-x-contain">
               <table className="w-full min-w-[850px] text-left text-sm">
                 <thead className="bg-slate-50 text-xs uppercase text-slate-500">
                   <tr>
@@ -262,7 +262,7 @@ const Inventory = () => {
                       <td className="px-5 py-4 text-slate-600">{product.gstRate}%</td>
                       <td className="px-5 py-4 text-slate-600">₹{product.sellingPrice}</td>
                       <td className="px-5 py-4">
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 whitespace-nowrap">
                           <button type="button" onClick={() => startEdit(product)} className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-50">Edit</button>
                           <button type="button" onClick={() => { setAdjustingProduct(product); setError(""); }} className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50">Adjust stock</button>
                         </div>
@@ -282,7 +282,7 @@ const Inventory = () => {
           {movements.length === 0 ? (
             <p className="p-6 text-sm text-slate-500">No stock movements recorded.</p>
           ) : (
-            <div className="overflow-x-auto">
+            <div className="max-w-full overflow-x-auto overscroll-x-contain">
               <table className="w-full min-w-[650px] text-left text-sm">
                 <thead className="bg-slate-50 text-xs uppercase text-slate-500">
                   <tr><th className="px-5 py-3">Date</th><th className="px-5 py-3">Product</th><th className="px-5 py-3">Movement</th><th className="px-5 py-3">Change</th><th className="px-5 py-3">Balance</th><th className="px-5 py-3">Note</th></tr>
@@ -306,8 +306,8 @@ const Inventory = () => {
       </div>
 
       {adjustingProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 p-4">
-          <form onSubmit={handleAdjustment} className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 p-3 sm:p-4">
+          <form onSubmit={handleAdjustment} className="max-h-[calc(100dvh-1.5rem)] w-full max-w-md overflow-y-auto rounded-2xl bg-white p-4 shadow-2xl sm:p-6">
             <h2 className="text-lg font-semibold text-slate-900">Adjust {adjustingProduct.name} stock</h2>
             <p className="mt-1 text-sm text-slate-500">Current: {adjustingProduct.stock} {adjustingProduct.unit}. Use a negative quantity to remove stock.</p>
             <label className={`${fieldClass} mt-5`}>
@@ -318,9 +318,9 @@ const Inventory = () => {
               Note
               <input value={adjustment.note} onChange={(event) => setAdjustment({ ...adjustment, note: event.target.value })} className={`${inputClass} mt-1.5`} />
             </label>
-            <div className="mt-6 flex justify-end gap-2">
-              <button type="button" onClick={() => setAdjustingProduct(null)} className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm">Cancel</button>
-              <button type="submit" disabled={saving} className="rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-60">{saving ? "Saving..." : "Record adjustment"}</button>
+            <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+              <button type="button" onClick={() => setAdjustingProduct(null)} className="min-h-11 rounded-xl border border-slate-200 px-4 py-2.5 text-sm">Cancel</button>
+              <button type="submit" disabled={saving} className="min-h-11 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-60">{saving ? "Saving..." : "Record adjustment"}</button>
             </div>
           </form>
         </div>

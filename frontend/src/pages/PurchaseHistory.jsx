@@ -4,7 +4,7 @@ import inventoryService from "../service/inventoryService";
 import purchaseService from "../service/purchaseService";
 
 const inputClass =
-  "mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10";
+  "mt-1.5 min-h-11 w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10";
 const labelClass = "block text-sm font-medium text-slate-700";
 
 const money = (value) =>
@@ -579,21 +579,21 @@ const PurchaseHistory = () => {
   );
 
   return (
-    <main className="min-h-screen w-full bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
-      <div className="w-full space-y-6">
+    <main className="min-h-screen min-w-0 w-full bg-slate-50 px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
+      <div className="min-w-0 w-full space-y-6">
         <header className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Purchase History</h1>
             <p className="mt-1 text-sm text-slate-500">Review supplier invoices, GST, payments, and receipts.</p>
           </div>
-          <Link to="/purchases" className="rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700">New Purchase</Link>
+          <Link to="/purchases" className="min-h-11 w-full rounded-xl bg-indigo-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-indigo-700 sm:w-auto">New Purchase</Link>
         </header>
 
         {error && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p>}
         {success && <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">{success}</p>}
 
         {summary && (
-          <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
             {[
               ["Invoice total", summary.invoiceTotal],
               ["GST on purchases", summary.totalGst],
@@ -609,19 +609,19 @@ const PurchaseHistory = () => {
         )}
 
         <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <form onSubmit={handleApply} className="grid gap-4 border-b border-slate-100 p-5 sm:grid-cols-2 lg:grid-cols-4">
+          <form onSubmit={handleApply} className="grid gap-4 border-b border-slate-100 p-4 sm:p-5 md:grid-cols-2 lg:grid-cols-4">
             <label className="text-sm font-medium text-slate-700">Search
-              <input value={filters.search} onChange={(event) => setFilters({ ...filters, search: event.target.value })} placeholder="Supplier, invoice, product" className="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm" />
+              <input value={filters.search} onChange={(event) => setFilters({ ...filters, search: event.target.value })} placeholder="Supplier, invoice, product" className="mt-1.5 min-h-11 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm" />
             </label>
             <label className="text-sm font-medium text-slate-700">From
-              <input type="date" value={filters.startDate} onChange={(event) => setFilters({ ...filters, startDate: event.target.value })} className="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm" />
+              <input type="date" value={filters.startDate} onChange={(event) => setFilters({ ...filters, startDate: event.target.value })} className="mt-1.5 min-h-11 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm" />
             </label>
             <label className="text-sm font-medium text-slate-700">To
-              <input type="date" value={filters.endDate} onChange={(event) => setFilters({ ...filters, endDate: event.target.value })} className="mt-1.5 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm" />
+              <input type="date" value={filters.endDate} onChange={(event) => setFilters({ ...filters, endDate: event.target.value })} className="mt-1.5 min-h-11 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm" />
             </label>
             <div className="flex items-end gap-2">
-              <button type="submit" className="flex-1 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700">Apply</button>
-              <button type="button" onClick={() => { const clean = { search: "", startDate: "", endDate: "" }; setFilters(clean); setAppliedFilters(clean); setPagination((previous) => ({ ...previous, page: 1 })); }} className="rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700">Reset</button>
+              <button type="submit" className="min-h-11 flex-1 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700">Apply</button>
+              <button type="button" onClick={() => { const clean = { search: "", startDate: "", endDate: "" }; setFilters(clean); setAppliedFilters(clean); setPagination((previous) => ({ ...previous, page: 1 })); }} className="min-h-11 rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700">Reset</button>
             </div>
           </form>
 
@@ -631,7 +631,7 @@ const PurchaseHistory = () => {
             <p className="p-12 text-center text-sm text-slate-500">No purchase records found.</p>
           ) : (
             <>
-              <div className="overflow-x-auto">
+              <div className="max-w-full overflow-x-auto overscroll-x-contain">
                 <table className="w-full min-w-[1050px] text-left text-sm">
                   <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
                     <tr>
@@ -707,11 +707,11 @@ const PurchaseHistory = () => {
                   </tbody>
                 </table>
               </div>
-              <div className="flex items-center justify-between border-t border-slate-100 px-5 py-4 text-sm">
+              <div className="flex flex-col gap-3 border-t border-slate-100 px-4 py-4 text-sm sm:flex-row sm:items-center sm:justify-between sm:px-5">
                 <p className="text-slate-500">{pagination.totalItems} record(s) · Page {pagination.page} of {pagination.totalPages}</p>
                 <div className="flex gap-2">
-                  <button type="button" disabled={pagination.page <= 1 || loading} onClick={() => setPagination((previous) => ({ ...previous, page: previous.page - 1 }))} className="rounded-lg border border-slate-200 px-3 py-2 disabled:opacity-40">Previous</button>
-                  <button type="button" disabled={pagination.page >= pagination.totalPages || loading} onClick={() => setPagination((previous) => ({ ...previous, page: previous.page + 1 }))} className="rounded-lg border border-slate-200 px-3 py-2 disabled:opacity-40">Next</button>
+                  <button type="button" disabled={pagination.page <= 1 || loading} onClick={() => setPagination((previous) => ({ ...previous, page: previous.page - 1 }))} className="min-h-11 rounded-lg border border-slate-200 px-3 py-2 disabled:opacity-40">Previous</button>
+                  <button type="button" disabled={pagination.page >= pagination.totalPages || loading} onClick={() => setPagination((previous) => ({ ...previous, page: previous.page + 1 }))} className="min-h-11 rounded-lg border border-slate-200 px-3 py-2 disabled:opacity-40">Next</button>
                 </div>
               </div>
             </>
@@ -720,14 +720,14 @@ const PurchaseHistory = () => {
       </div>
 
       {editingPurchase && editForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-3 sm:p-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-2 sm:p-4 md:p-6">
           <section
             role="dialog"
             aria-modal="true"
             aria-labelledby="edit-purchase-title"
-            className="max-h-[95vh] w-full max-w-3xl overflow-y-auto rounded-2xl bg-white shadow-2xl"
+            className="max-h-[calc(100dvh-1rem)] w-full max-w-3xl overflow-y-auto rounded-2xl bg-white shadow-2xl"
           >
-            <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-100 bg-white px-5 py-4 sm:px-7">
+            <header className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-slate-100 bg-white px-4 py-3 sm:px-7 sm:py-4">
               <div>
                 <h2 id="edit-purchase-title" className="text-lg font-bold text-slate-900">Edit purchase</h2>
                 <p className="mt-1 text-xs leading-5 text-slate-500">
@@ -735,16 +735,16 @@ const PurchaseHistory = () => {
                   the saved purchase record.
                 </p>
               </div>
-              <button type="button" onClick={closeEdit} disabled={savingEdit || recordingPayment} aria-label="Close edit purchase" className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-500 hover:bg-slate-100 disabled:opacity-50">Close</button>
+              <button type="button" onClick={closeEdit} disabled={savingEdit || recordingPayment} aria-label="Close edit purchase" className="min-h-11 shrink-0 rounded-lg px-3 py-2 text-sm font-semibold text-slate-500 hover:bg-slate-100 disabled:opacity-50">Close</button>
             </header>
 
-            <form onSubmit={handleSaveEdit} className="space-y-5 p-5 sm:p-7">
+            <form onSubmit={handleSaveEdit} className="space-y-5 p-4 sm:p-7">
               {editError && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">{editError}</p>}
               {loadingEditProducts && <p role="status" className="text-sm text-slate-500">Loading product choices...</p>}
 
               <section>
                 <h3 className="text-sm font-semibold text-slate-900">Supplier and invoice</h3>
-                <div className="mt-3 grid gap-4 sm:grid-cols-2">
+                <div className="mt-3 grid gap-4 md:grid-cols-2">
                   <label className={labelClass}>Supplier name *
                     <input className={inputClass} value={editForm.supplierName} onChange={(event) => setEditForm({ ...editForm, supplierName: event.target.value })} required />
                   </label>
@@ -765,8 +765,8 @@ const PurchaseHistory = () => {
 
               <section className="border-t border-slate-100 pt-5">
                 <h3 className="text-sm font-semibold text-slate-900">Product, pricing, and GST</h3>
-                <div className="mt-3 grid gap-4 sm:grid-cols-2">
-                  <label className={`${labelClass} sm:col-span-2`}>Product *
+                <div className="mt-3 grid gap-4 md:grid-cols-2">
+                  <label className={`${labelClass} md:col-span-2`}>Product *
                     <select className={inputClass} value={editForm.productId} onChange={(event) => setEditForm({ ...editForm, productId: event.target.value })} required disabled={loadingEditProducts}>
                       <option value="">Select a product</option>
                       {editProducts.map((product) => <option key={product._id} value={product._id}>{product.name}{product.active ? "" : " (inactive)"}</option>)}
@@ -827,7 +827,7 @@ const PurchaseHistory = () => {
                     </span>
                   </div>
 
-                  <dl className="mt-4 grid gap-3 sm:grid-cols-3">
+                  <dl className="mt-4 grid gap-3 md:grid-cols-3">
                     <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
                       <dt className="text-xs font-medium text-slate-500">
                         Purchase Total
@@ -890,7 +890,7 @@ const PurchaseHistory = () => {
                         No payments recorded.
                       </p>
                     ) : (
-                      <div className="mt-2 overflow-x-auto rounded-xl border border-slate-200">
+                      <div className="mt-2 max-w-full overflow-x-auto overscroll-x-contain rounded-xl border border-slate-200">
                         <table className="w-full min-w-[560px] text-left text-xs">
                           <thead className="bg-slate-50 text-slate-500">
                             <tr>
@@ -1122,8 +1122,8 @@ const PurchaseHistory = () => {
               )}
 
               <footer className="flex flex-col-reverse gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:justify-end">
-                <button type="button" onClick={closeEdit} disabled={savingEdit || recordingPayment} className="rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50">Cancel</button>
-                <button type="submit" disabled={savingEdit || recordingPayment || loadingEditProducts} className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50">{savingEdit ? "Saving changes..." : "Save Changes"}</button>
+                <button type="button" onClick={closeEdit} disabled={savingEdit || recordingPayment} className="min-h-11 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50 sm:w-auto">Cancel</button>
+                <button type="submit" disabled={savingEdit || recordingPayment || loadingEditProducts} className="min-h-11 w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto">{savingEdit ? "Saving changes..." : "Save Changes"}</button>
               </footer>
             </form>
           </section>

@@ -4,7 +4,7 @@ import inventoryService from "../service/inventoryService";
 import purchaseService from "../service/purchaseService";
 
 const inputClass =
-  "mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10";
+  "mt-1.5 min-h-11 w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10";
 const labelClass = "block text-sm font-medium text-slate-700";
 const methods = ["Cash", "UPI", "Bank Transfer", "Card", "Other"];
 const localDate = () => {
@@ -182,14 +182,14 @@ const PurchaseInfo = () => {
   };
 
   return (
-    <main className="min-h-screen w-full bg-slate-50 px-4 py-6 sm:px-6 lg:px-8">
-      <div className="w-full">
+    <main className="min-h-screen min-w-0 w-full bg-slate-50 px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
+      <div className="min-w-0 w-full">
         <header className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Purchase Management</h1>
             <p className="mt-1 text-sm text-slate-500">Record supplier invoices and optionally receive stock.</p>
           </div>
-          <Link to="/purchase-history" className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-100">Purchase History</Link>
+          <Link to="/purchase-history" className="min-h-11 w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-center text-sm font-semibold text-slate-700 hover:bg-slate-100 sm:w-auto">Purchase History</Link>
         </header>
 
         {error && <p role="alert" className="mb-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p>}
@@ -201,10 +201,10 @@ const PurchaseInfo = () => {
             Add products to inventory before entering purchases. <Link className="font-semibold underline" to="/inventory">Open Inventory</Link>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
+          <form onSubmit={handleSubmit} className="space-y-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:p-8">
             <section>
               <h2 className="text-base font-semibold text-slate-900">Supplier and invoice</h2>
-              <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 <label className={labelClass}>Supplier name *
                   <input className={inputClass} value={form.supplierName} onChange={(event) => updateForm("supplierName", event.target.value)} required />
                 </label>
@@ -230,14 +230,14 @@ const PurchaseInfo = () => {
 
             <section className="border-t border-slate-100 pt-6">
               <h2 className="text-base font-semibold text-slate-900">Product and GST</h2>
-              <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <label className={`${labelClass} sm:col-span-2 lg:col-span-3`}>Product *
+              <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <label className={`${labelClass} md:col-span-2 lg:col-span-3`}>Product *
                   <select className={inputClass} value={form.productId} onChange={handleProductSelect} required>
                     <option value="">Select a product</option>
                     {products.map((item) => <option key={item._id} value={item._id}>{item.name}{item.sku ? ` (${item.sku})` : ""} · {item.stock} {item.unit} available</option>)}
                   </select>
                 </label>
-                {product && <p className="sm:col-span-2 lg:col-span-3 -mt-2 text-xs text-slate-500">HSN: {form.hsnCode || "Not set"} · Business state: {businessProfile?.state || "Not configured"} (<Link to="/business-settings" className="font-medium text-indigo-600 underline">GST settings</Link>)</p>}
+                {product && <p className="md:col-span-2 lg:col-span-3 -mt-2 text-xs text-slate-500">HSN: {form.hsnCode || "Not set"} · Business state: {businessProfile?.state || "Not configured"} (<Link to="/business-settings" className="font-medium text-indigo-600 underline">GST settings</Link>)</p>}
                 <label className={labelClass}>Quantity *
                   <input type="number" min="0.001" step="any" className={inputClass} value={form.quantity} onChange={(event) => updateForm("quantity", event.target.value)} required />
                 </label>
@@ -263,7 +263,7 @@ const PurchaseInfo = () => {
                 </label>
               </div>
               {calculation.stateError && <p className="mt-3 text-sm text-amber-700">{calculation.stateError}</p>}
-              <div className="mt-5 grid gap-3 rounded-xl bg-indigo-50 p-4 text-sm sm:grid-cols-2 lg:grid-cols-4">
+              <div className="mt-5 grid gap-3 rounded-xl bg-indigo-50 p-4 text-sm md:grid-cols-2 lg:grid-cols-4">
                 <p>Taxable amount <strong className="block text-slate-900">{money(calculation.taxableAmount)}</strong></p>
                 <p>CGST / SGST <strong className="block text-slate-900">{money(calculation.cgstAmount)} / {money(calculation.sgstAmount)}</strong></p>
                 <p>IGST / Total GST <strong className="block text-slate-900">{money(calculation.igstAmount)} / {money(calculation.totalGst)}</strong></p>
@@ -280,7 +280,7 @@ const PurchaseInfo = () => {
                 <span><strong>Goods received</strong><span className="mt-1 block text-xs text-slate-500">Only checked purchases add stock and create a receipt movement. Unchecked purchases are saved as drafts.</span></span>
               </label>
             </section>
-            <button type="submit" disabled={saving} className="w-full rounded-xl bg-indigo-600 px-5 py-3.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60">
+            <button type="submit" disabled={saving} className="min-h-11 w-full rounded-xl bg-indigo-600 px-5 py-3.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60">
               {saving ? "Saving purchase..." : form.receiveStock ? "Record Purchase and Receive Stock" : "Save Purchase Draft"}
             </button>
           </form>
