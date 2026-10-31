@@ -1,3 +1,6 @@
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -10,6 +13,8 @@ import purchaseRouter from "./router/purchase.route.js";
 import { adminOnly, protect } from "./middleware/auth.middleware.js";
 
 const app = express();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 const clientUrl =
   process.env.CLIENT_URL ||
   (process.env.NODE_ENV === "production"
@@ -30,6 +35,31 @@ app.use("/api/sales", protect, adminOnly, salesRouter);
 app.use("/api/dashboard", protect, adminOnly, dashboardRouter);
 app.use("/api/inventory", protect, adminOnly, inventoryRouter);
 app.use("/api/purchases", protect, adminOnly, purchaseRouter);
+
+/*
+  Production me React (frontend/dist) isi server se serve hoga.
+  Ye block saare /api routes ke BAAD aur 404 handler se PEHLE hona chahiye.
+  Path apne folder ke hisaab se check karna:
+  app.js agar backend/ me hai to "../frontend/dist", backend/src me ho to "../../frontend/dist".
+*/
+if (process.env.NODE_ENV === "production") {
+  const distPath = path.join(__dirname, "../frontend/dist");
+
+  if (fs.existsSync(path.join(distPath, "index.html"))) {
+    app.use(express.static(distPath));
+
+    // React Router ke routes (/login, /dashboard...) par index.html bhejo.
+    // /api wale unknown routes neeche ke JSON 404 handler tak jayenge.
+    app.use((req, res, next) => {
+      if (req.method !== "GET" || req.path.startsWith("/api")) return next();
+      return res.sendFile(path.join(distPath, "index.html"));
+    });
+  } else {
+    console.warn(
+      `frontend build not found at ${distPath}. Run "npm run build" in frontend/.`
+    );
+  }
+}
 
 app.use((_req, res) =>
   res.status(404).json({
