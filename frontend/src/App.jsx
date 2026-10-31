@@ -1,6 +1,5 @@
-
 import {
-  BrowserRouter,
+  HashRouter,
   Navigate,
   Route,
   Routes,
@@ -25,7 +24,7 @@ import BusinessSettings from "./pages/BusinessSettings";
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <HashRouter>
         <SalesProvider>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -42,6 +41,7 @@ function App() {
                 <Route path="/inventory" element={<Inventory />} />
                 <Route path="/business-settings" element={<BusinessSettings />} />
                 <Route path="/update/:id" element={<EditSaleDrawer />} />
+
                 <Route
                   path="*"
                   element={<Navigate to="/dashboard" replace />}
@@ -50,7 +50,7 @@ function App() {
             </Route>
           </Routes>
         </SalesProvider>
-      </BrowserRouter>
+      </HashRouter>
     </AuthProvider>
   );
 }
