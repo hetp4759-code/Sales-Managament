@@ -36,8 +36,8 @@ jobs:
 
       - name: Build frontend
         working-directory: frontend
-        env:
-          VITE_API_URL: https://YOUR-BACKEND-URL/api
+       env:
+          VITE_API_URL: http://localhost:3000/api
         run: npm run build
 
       - name: Setup Pages
