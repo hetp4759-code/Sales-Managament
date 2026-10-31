@@ -1,26 +1,28 @@
 import axios from "axios";
 
+
+const API_ROOT_URL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD ? "/api" : "http://localhost:3000/api");
+
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: `${API_ROOT_URL}/sales`,
   headers: {
     "Content-Type": "application/json",
   },
   timeout: 10000,
-  withCredentials: true,
+  withCredentials: true, // login cookie har request ke saath jayegi
 });
 
-export const API_ROOT = apiClient.defaults.baseURL.replace(/\/sales\/?$/, "");
+export const API_ROOT = API_ROOT_URL;
 
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    const requestUrl = error.config?.url || "";
+    const status = error.response?.status;
+    const url = error.config?.url || "";
 
-    if (
-      error.response?.status === 401 &&
-      !requestUrl.includes("/auth/") &&
-      typeof window !== "undefined"
-    ) {
+    if (status === 401 && !url.includes("/auth/")) {
       window.dispatchEvent(new Event("auth:unauthorized"));
     }
 
