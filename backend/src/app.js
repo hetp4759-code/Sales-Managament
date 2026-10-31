@@ -15,17 +15,43 @@ import { adminOnly, protect } from "./middleware/auth.middleware.js";
 const app = express();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const clientUrl =
-  process.env.CLIENT_URL ||
+const frontendUrl =
+  process.env.FRONTEND_URL ||
   (process.env.NODE_ENV === "production"
     ? undefined
     : "http://localhost:5173");
 
-if (!clientUrl) {
-  throw new Error("CLIENT_URL must be configured in production.");
+if (!frontendUrl) {
+  throw new Error("FRONTEND_URL must be configured in production.");
 }
 
-app.use(cors({ origin: clientUrl, credentials: true }));
+const allowedOrigins = new Set(["http://localhost:5173", frontendUrl]);
+const safeMethods = new Set(["GET", "HEAD", "OPTIONS"]);
+const corsOptions = {
+  origin: (origin, callback) => {
+    callback(null, !origin || allowedOrigins.has(origin));
+  },
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+app.use((req, res, next) => {
+  const origin = req.get("Origin");
+
+  if (
+    origin &&
+    !safeMethods.has(req.method) &&
+    !allowedOrigins.has(origin)
+  ) {
+    return res.status(403).json({
+      success: false,
+      message: "Origin not allowed.",
+    });
+  }
+
+  return next();
+});
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
